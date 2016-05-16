@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>my</groupId>
-            <artifactId>rpc-server-impl</artifactId>
+            <artifactId>rpc-client-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

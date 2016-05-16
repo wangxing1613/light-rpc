@@ -1,6 +1,6 @@
 package my;
 
-import my.rpcregister.Constant;
+import my.constant.Constant;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;

@@ -4,6 +4,7 @@
 
 package my.rpcregister;
 
+import my.constant.Constant;
 import org.apache.zookeeper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ public class ServiceRegister {
     public void register(String data) {
         if(null != data) {
             ZooKeeper zk = connectServer();
+            if(null == zk)
+                throw new NullPointerException("zk must's be null !");
             createNode(zk, data);
         }
     }
@@ -35,13 +38,11 @@ public class ServiceRegister {
 
         try {
             byte[] bytes = data.getBytes();
-            zk.create(Constant.ZK_REGISTRY_PATH, "RegisterRoot".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+
             String path = zk.create(Constant.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
             LOGGER.debug("create zookeeper node ({} => {})", path, data);
 
-        } catch (KeeperException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -54,8 +55,9 @@ public class ServiceRegister {
                         latch.countDown();
                 }
             });
+            zk.create(Constant.ZK_REGISTRY_PATH, "RegisterRoot".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             latch.await();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | KeeperException e) {
             LOGGER.error("", e);
         }
         return zk;

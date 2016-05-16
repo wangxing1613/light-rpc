@@ -27,7 +27,7 @@ public class ServiceRegister {
 
     public void register(String data) {
         if(null != data) {
-            ZooKeeper zk = connectServer();
+            ZooKeeper zk = connectZK();
             if(null == zk)
                 throw new NullPointerException("zk must's be null !");
             createNode(zk, data);
@@ -47,7 +47,7 @@ public class ServiceRegister {
         }
     }
 
-    private ZooKeeper connectServer() {
+    private ZooKeeper connectZK() {
         ZooKeeper zk = null;
         try {
             zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, (event)-> {

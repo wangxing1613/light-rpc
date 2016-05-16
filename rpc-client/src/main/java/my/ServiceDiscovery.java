@@ -30,7 +30,7 @@ public class ServiceDiscovery {
     public ServiceDiscovery(String registryAddress) {
         this.registryAddress = registryAddress;
 
-        ZooKeeper zk = connectServer();
+        ZooKeeper zk = connectZK();
         if (zk != null) {
             watchNode(zk);
         }
@@ -51,7 +51,7 @@ public class ServiceDiscovery {
         return data;
     }
 
-    private ZooKeeper connectServer() {
+    private ZooKeeper connectZK() {
         ZooKeeper zk = null;
         try {
             zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
